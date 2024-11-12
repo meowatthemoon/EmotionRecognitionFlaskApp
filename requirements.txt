@@ -1,0 +1,8 @@
+deepface
+flask
+flask_login
+flask_sqlalchemy
+moviepy
+numpy
+opencv-python
+tf_keras
