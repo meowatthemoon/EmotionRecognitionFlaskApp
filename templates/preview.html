@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='extended_beauty.css') }}" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Video with Emotion Bars</title>
+  <style>
+    /* General styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      flex-wrap: wrap;
+      padding: 30px;
+    }
+
+    .video-container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .progress-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 100%;
+      max-width: 350px;
+      margin-top: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      font-size: 16px;
+      color: #555;
+    }
+
+    th {
+      background-color: #f1f1f1;
+      font-weight: bold;
+    }
+
+    .progress-bar-container {
+      background-color: #f3f3f3;
+      border-radius: 5px;
+      overflow: hidden;
+      height: 20px;
+      margin-top: 5px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #4caf50;
+      text-align: center;
+      color: white;
+      transition: width 0.5s ease-in-out;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    /* Responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .progress-container {
+        max-width: 100%;
+      }
+
+      video {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <!-- Video container -->
+    <div class="video-container">
+      <video width="320" height="240" controls>
+        <source src="{{ url_for('static', filename='videos/' + video_name) }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Emotion Progress Bars -->
+    <div class="progress-container">
+      <h2>Emotion Analysis</h2>
+      <table>
+        <tr>
+          <th>Emotion</th>
+          <th>Confidence</th>
+        </tr>
+        {% set emotions_list = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise'] %}
+        {% for i in range(7) %}
+        <tr>
+          <td>{{ emotions_list[i] }}</td>
+          <td>
+            <div class="progress-bar-container">
+              <div id="progress-bar-{{ i }}" 
+                   class="progress-bar" 
+                   style="width: {{ emotions[i] }}%;">
+                {{ emotions[i] }}%
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock %}
